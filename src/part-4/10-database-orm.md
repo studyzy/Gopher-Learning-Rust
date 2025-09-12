@@ -1,4 +1,4 @@
-# 第九章 数据库与 ORM：从 Go 到 Rust 的平滑迁移
+# 第10章：数据库与 ORM：从 Go 到 Rust 的平滑迁移
 
 面向对象：有多年 Go 后端经验、熟悉 database/sql、sqlx、GORM、迁移工具（goose/migrate）、连接池、事务与测试的工程师。本章帮助你快速掌握 Rust 在数据库访问上的主流选择、差异化理念与最佳实践。
 

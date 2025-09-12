@@ -1,4 +1,4 @@
-# 15. 从零构建一个生产级后端
+# 第16章：从零构建一个生产级后端
 
 本章带你从 0 到 1 落地一个“可上线”的 Rust 后端服务，覆盖需求拆解、项目骨架、配置/日志、HTTP API、数据库/迁移、鉴权、异步任务、测试与 CI/CD、容器化与部署。对照 Go 的常见做法（gin/chi + gorm/sqlx + zap + wire），给出在 Rust 生态的等价实践（axum + sqlx + tracing + cargo features）。
 

@@ -1,7 +1,5 @@
 # 前言：从 Go 到 Rust 的华美蜕变
 
-> 📖 **[下载PDF版本](assets/gopher-learning-rust.pdf)** - 离线阅读，随时随地学习Rust
-
 亲爱的 Go 开发者，
 
 如果你正在阅读这本书，说明你已经在 Go 的世界里体验过编程的纯粹与优雅。你熟悉那种「Less is more」的设计哲学，享受过 goroutine 的轻盈与 channel 的美妙，也深深认同 Go 那句著名的格言："Don't communicate by sharing memory; share memory by communicating"。

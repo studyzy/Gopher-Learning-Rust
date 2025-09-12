@@ -1,4 +1,7 @@
 # 第三部分：类型系统与抽象
 
-概览：用 Struct/Enum/Trait 与泛型构建零成本抽象。
-状态：待写作
+探索Rust类型系统高级特性：
+- Struct/Enum/Trait设计模式
+- Trait对象与动态分发
+- 泛型与Trait约束
+- 零成本抽象原理

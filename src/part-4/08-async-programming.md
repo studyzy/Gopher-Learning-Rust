@@ -1,4 +1,4 @@
-# 7. 异步编程
+# 第8章：异步编程
 
 本章从 Go 开发者视角系统介绍 Rust 异步：从 async/await 和 Future，到执行器（runtime），对照 goroutine/channel 的编程范式。结合 Tokio 实战网络 IO、任务并发、超时取消、限流与结构化并发，帮助你把 Go 的经验自然迁移到 Rust 服务端。
 

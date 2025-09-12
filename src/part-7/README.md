@@ -1,4 +1,7 @@
 # 第七部分：实战项目
 
-概览：从零搭建生产可用的 Rust 后端并部署。
-状态：待写作
+综合实战演练：
+- 构建RESTful/gRPC服务
+- 实现JWT鉴权与监控
+- Docker/K8s部署实践
+- 高级话题：Unsafe/FFI/WASM

@@ -2,15 +2,14 @@
 
 <div class="cover-page">
   <div class="cover-header">
-    <h1 class="cover-title">Go程序员Rust从入门到精通</h1>
+    <h1 class="cover-title">《Go程序员Rust从入门到精通》</h1>
     <h2 class="cover-subtitle">专为Go程序员设计的Rust学习指南</h2>
     <div class="cover-author">作者：深蓝居</div>
   </div>
 
   <div class="cover-description">
     <p>这是一本专门为Go程序员量身定制的Rust学习指南。如果你已经熟悉Go语言，想要学习Rust，那么这本书将帮助你快速理解两种语言的差异，掌握Rust的核心概念，并在实际项目中应用Rust。</p>
-    
-    <p>本书从语言思维转换开始，深入讲解所有权与生命周期、类型系统、异步编程、并发模型等核心主题，最后通过实战项目帮助你完成从Go到Rust的完美转换。</p>
+    本书从语言思维转换开始，深入讲解所有权与生命周期、类型系统、异步编程、并发模型等核心主题，最后通过实战项目帮助你完成从Go到Rust的完美转换。
   </div>
 
   <div class="cover-features">
@@ -28,7 +27,7 @@
       <p><strong>📖 多种阅读方式</strong></p>
       <p>
         <a href="assets/gopher-learning-rust.pdf" class="pdf-download-link" target="_blank">
-          📄 下载PDF版本
+            下载PDF版本
         </a>
         ｜
         <a href="./preface.html" class="online-read-link">

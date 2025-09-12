@@ -1,4 +1,4 @@
-# 5. Struct / Enum / Trait
+# 第6章：Struct / Enum / Trait
 
 面向 Go 后端开发者的 Rust 结构化编程三件套：Struct、Enum 和 Trait。本章以 Go 的既有心智模型为基础，系统讲清 Rust 的语法、语义与工程实践差异，帮助你用“Go 的方式”迅速掌握“Rust 的写法”。
 
