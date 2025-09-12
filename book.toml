@@ -1,5 +1,59 @@
 [book]
 authors = ["深蓝居"]
-language = "cn"
+language = "zh"
+multilingual = false
 src = "src"
 title = "Go程序员Rust从入门到精通"
+description = "专为Go程序员设计的Rust学习指南，从语言思维转换到实战项目，全面掌握Rust编程"
+
+[rust]
+edition = "2021"
+
+[preprocessor.links]
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+smart-punctuation = true
+mathjax-support = false
+copy-fonts = true
+additional-css = ["theme/custom.css"]
+additional-js = ["theme/custom.js"]
+no-section-label = false
+git-repository-url = "https://github.com/studyzy/Gopher-Learning-Rust"
+edit-url-template = "https://github.com/studyzy/Gopher-Learning-Rust/edit/main/{path}"
+site-url = "/"
+cname = ""
+input-404 = ""
+theme = "theme"
+
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.playground]
+copyable = true
+copy-js = true
+line-numbers = true
+editable = true
+runnable = true
+
+[output.html.print]
+enable = true
+
+[build]
+build-dir = "book"
+create-missing = true
+preprocess = ["links"]
+use-default-preprocessors = true
