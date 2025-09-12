@@ -14,7 +14,7 @@
 
 ——
 
-## 1. 为什么选 tracing
+## 14.1 为什么选 tracing
 
 tracing 是 Rust 事实标准的“结构化日志 + 诊断”框架，优势：
 - 结构化字段：更像 Go 的 zap，避免 string 拼接。
@@ -28,7 +28,7 @@ tracing 是 Rust 事实标准的“结构化日志 + 诊断”框架，优势：
 
 ——
 
-## 2. 初始化方案：格式切换与动态级别
+## 14.2 初始化方案：格式切换与动态级别
 
 依赖：
 ```toml
@@ -104,7 +104,7 @@ fn main() {
 
 ——
 
-## 3. 日志实践：字段化、Span、错误链、脱敏
+## 14.3 日志实践：字段化、Span、错误链、脱敏
 
 字段化日志：
 ```rust
@@ -163,6 +163,7 @@ fn main() -> Result<()> {
 ```
 
 脱敏：对敏感字段进行 hash/屏蔽；在日志中统一用 masked 字段名：
+
 ```rust
 let masked = format!("{}***", &token[..4.min(token.len())]);
 tracing::info!(token.masked = %masked, "received token");
@@ -170,7 +171,7 @@ tracing::info!(token.masked = %masked, "received token");
 
 ——
 
-## 4. 配置管理：TOML + 环境变量 + CLI
+## 14.4 配置管理：TOML + 环境变量 + CLI
 
 依赖：
 ```toml
@@ -242,7 +243,7 @@ fn main() -> anyhow::Result<()> {
 
 ——
 
-## 5. 动态配置与热重载
+## 14.5 动态配置与热重载
 
 目标：运行期动态调整日志级别、替换下游地址或开关功能。手段：
 - 日志级别：使用 tracing-subscriber 的 reload handle。
@@ -270,7 +271,7 @@ async fn install_sighup() {
 
 ——
 
-## 6. OpenTelemetry：分布式追踪与指标
+## 14.6 OpenTelemetry：分布式追踪与指标
 
 依赖：
 ```toml
@@ -319,7 +320,7 @@ pub fn shutdown_tracer() {
 
 ——
 
-## 7. 与 Web/DB/异步框架集成
+## 14.7 与 Web/DB/异步框架集成
 
 HTTP（axum + tower-http 日志中间件）：
 ```toml
@@ -364,7 +365,7 @@ Tokio：
 
 ——
 
-## 8. 最佳实践与常见坑
+## 14.8 最佳实践与常见坑
 
 - 统一日志格式：本地 pretty，生产 JSON；通过配置或 env 切换。
 - 字段命名约定：service、env、version、trace_id、span_id、request_id、user_id 等统一键名。
@@ -378,7 +379,7 @@ Tokio：
 
 ——
 
-## 9. 最小可复用模板
+## 14.9 最小可复用模板
 
 提供一套“开箱即用”的日志+配置骨架，便于复制到你的项目中：
 - logging.rs：init_logging、set_log_level、init_tracing_with_otlp

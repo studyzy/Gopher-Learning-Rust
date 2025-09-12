@@ -4,7 +4,7 @@
 
 ---
 
-## 7.1 Go vs Rust 的并发/异步模型
+## 8.1 Go vs Rust 的并发/异步模型
 
 - Go
   - goroutine：轻量线程，由 runtime 调度（M:N）。
@@ -24,7 +24,7 @@
 
 ---
 
-## 7.2 基础语法：async/await 与 Future
+## 8.2 基础语法：async/await 与 Future
 
 - async 函数返回的是 impl Future
 ```rust
@@ -59,7 +59,7 @@ async fn main() {
 
 ---
 
-## 7.3 Tokio 快速入门
+## 8.3 Tokio 快速入门
 
 - 选择 Tokio 的理由：成熟、生态广、性能佳（多 Reactor + work-stealing 调度器），IO/定时器/通道/同步原语齐全。
 - Cargo 依赖（示例）
@@ -82,7 +82,7 @@ async fn main() {
 
 ---
 
-## 7.4 并发任务：spawn、join、select
+## 8.4 并发任务：spawn、join、select
 
 - 并发启动任务
 ```rust
@@ -130,7 +130,7 @@ async fn main() {
 
 ---
 
-## 7.5 通道：mpsc、oneshot、broadcast
+## 8.5 通道：mpsc、oneshot、broadcast
 
 - mpsc：多生产者单消费者
 ```rust
@@ -192,7 +192,7 @@ async fn main() {
 
 ---
 
-## 7.6 异步 IO：TCP/HTTP 实战
+## 8.6 异步 IO：TCP/HTTP 实战
 
 - TCP Echo 服务器（Tokio）
 ```rust
@@ -260,7 +260,7 @@ async fn main() {
 
 ---
 
-## 7.7 超时、取消与背压
+## 8.7 超时、取消与背压
 
 - 超时
 ```rust
@@ -331,7 +331,7 @@ async fn main() {
 
 ---
 
-## 7.8 Send/Sync、Pin 与 async 生命周期
+## 8.8 Send/Sync、Pin 与 async 生命周期
 
 - Send/Sync
   - Send：可在线程间移动（move）。
@@ -366,7 +366,7 @@ async fn main() {
 
 ---
 
-## 7.9 错误处理与结构化并发
+## 8.9 错误处理与结构化并发
 
 - anyhow/thiserror 搭配使用
 ```toml
@@ -411,7 +411,7 @@ async fn main() -> anyhow::Result<()> {
 
 ---
 
-## 7.10 async 与同步代码的边界
+## 8.10 async 与同步代码的边界
 
 - 避免在 async 内进行阻塞 IO 或 CPU 密集计算；必要时使用 spawn_blocking
 ```rust
@@ -430,7 +430,7 @@ async fn main() {
 
 ---
 
-## 7.11 在服务端工程中的实践建议
+## 8.11 在服务端工程中的实践建议
 
 - 选择 Tokio，并在 Cargo.toml 精准启用所需 features，减少二进制体积。
 - 明确任务边界：对外层 API 提供取消/超时；内部任务定期检查取消。
@@ -460,7 +460,7 @@ async fn main() {
 
 ---
 
-## 7.12 从 Go 迁移的常见坑与心智模型
+## 8.12 从 Go 迁移的常见坑与心智模型
 
 - 想当然把 goroutine 当做“无限免费”：Rust 的任务同样廉价但并非零成本，注意内存、上下文切换、队列拥塞。
 - 在 async 上使用阻塞库导致整个执行器饥饿；应使用 async 版本或 spawn_blocking。
@@ -470,7 +470,7 @@ async fn main() {
 
 ---
 
-## 7.13 练习
+## 8.13 练习
 
 1) 使用 Tokio 实现一个带并发上限和超时的抓取器：
 - 输入一组 URL，最大并发 10，每个请求 1 秒超时，返回成功的响应 body 长度之和。
@@ -485,7 +485,7 @@ async fn main() {
 
 ---
 
-## 7.14 小结
+## 8.14 小结
 
 - Rust 的 async/await 基于 Future 与执行器，提供类似 Go 的高并发能力，同时借助类型系统保证跨线程安全。
 - Tokio 生态完善，涵盖网络 IO、时间、同步原语、通道等，适合服务端开发。

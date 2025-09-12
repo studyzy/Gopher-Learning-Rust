@@ -14,7 +14,7 @@
 
 ——
 
-## 1. 迁移心智图：Go → Rust 的关键对照
+## 18.1 迁移心智图：Go → Rust 的关键对照
 
 - 并发模型
   - Go：goroutine + channel + sync
@@ -45,7 +45,7 @@
 
 ——
 
-## 2. 能力矩阵与常用技术栈
+## 18.2 能力矩阵与常用技术栈
 
 - Web/API
   - axum + tower-http（trace/cors/compress/timeout/limit）
@@ -70,7 +70,7 @@
 
 ——
 
-## 3. 90 天路线图：学习与实战并进
+## 18.3 90 天路线图：学习与实战并进
 
 阶段一（第 1–30 天）：语法与并发基础
 - Rust 基础语法、所有权/借用/生命周期、Result/?、thiserror/anyhow
@@ -95,7 +95,7 @@
 
 ——
 
-## 4. 脚手架与项目模板建议
+## 18.4 脚手架与项目模板建议
 
 - workspace 模板
   - crates/dto：共享模型与错误
@@ -117,7 +117,7 @@
 
 ——
 
-## 5. 团队工程规范与代码评审清单
+## 18.5 团队工程规范与代码评审清单
 
 代码规范
 - 错误处理：库层 thiserror，应用层 anyhow；? 优先；日志打印使用 tracing 字段化
@@ -136,7 +136,7 @@
 
 ——
 
-## 6. 运维与可观测性落地清单
+## 18.6 运维与可观测性落地清单
 
 - 日志：生产使用 JSON；EnvFilter 动态级别；按 trace_id 聚合
 - 指标：QPS、延迟直方图、错误率、队列长度、在飞任务
@@ -148,7 +148,7 @@
 
 ——
 
-## 7. 常见问题速查与应对
+## 18.7 常见问题速查与应对
 
 - 编译期生命周期错误：先简化签名，返回 owned 类型或 Arc；引入更短借用作用域
 - “Future is not Send”：检查 captured 变量，避免 Rc/RefCell/!Send 类型进入任务；必要时用 spawn_local 或改用 Arc/Mutex
@@ -159,7 +159,7 @@
 
 ——
 
-## 8. 推荐资源与社区
+## 18.8 推荐资源与社区
 
 - 官方
   - The Rust Book、Rustonomicon、Tokio Guide、Rust Async Book

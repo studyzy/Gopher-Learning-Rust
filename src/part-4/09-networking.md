@@ -4,7 +4,7 @@
 
 ---
 
-## 8.1 Go 到 Rust 的网络心智迁移
+## 9.1 Go 到 Rust 的网络心智迁移
 
 - Go 常用：
   - net、net/http、http2、grpc-go、context 控制超时与取消、http.Client 连接池与重试、io.Reader/Writer 流式处理。
@@ -23,7 +23,7 @@
 
 ---
 
-## 8.2 基础：TCP Echo（Tokio）
+## 9.2 基础：TCP Echo（Tokio）
 
 ```rust
 use tokio::{
@@ -62,7 +62,7 @@ async fn main() -> std::io::Result<()> {
 
 ---
 
-## 8.3 UDP 示例：无连接 Echo
+## 9.3 UDP 示例：无连接 Echo
 
 ```rust
 use tokio::net::UdpSocket;
@@ -84,7 +84,7 @@ async fn main() -> std::io::Result<()> {
 
 ---
 
-## 8.4 HTTP 客户端：reqwest
+## 9.4 HTTP 客户端：reqwest
 
 Cargo 依赖：
 ```toml
@@ -167,7 +167,7 @@ async fn download_to_file(client: &Client, url: &str, path: &str) -> anyhow::Res
 
 ---
 
-## 8.5 HTTP 服务端：axum（基于 hyper）
+## 9.5 HTTP 服务端：axum（基于 hyper）
 
 依赖：
 ```toml
@@ -231,7 +231,7 @@ async fn main() {
 
 ---
 
-## 8.6 TLS：rustls 与 HTTPS
+## 9.6 TLS：rustls 与 HTTPS
 
 依赖：
 ```toml
@@ -287,7 +287,7 @@ async fn main() -> anyhow::Result<()> {
 
 ---
 
-## 8.7 WebSocket：实时通信
+## 9.7 WebSocket：实时通信
 
 依赖：
 ```toml
@@ -340,7 +340,7 @@ async fn main() {
 
 ---
 
-## 8.8 gRPC：tonic
+## 9.8 gRPC：tonic
 
 依赖：
 ```toml
@@ -400,7 +400,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ---
 
-## 8.9 序列化与数据格式
+## 9.9 序列化与数据格式
 
 - JSON：serde/serde_json
 - MessagePack：rmp-serde
@@ -424,7 +424,7 @@ fn def_port() -> u16 { 8080 }
 
 ---
 
-## 8.10 底层控制：socket2 与内核参数
+## 9.10 底层控制：socket2 与内核参数
 
 当需要更细控制（如复用端口、禁用 Nagle）：
 ```toml
@@ -455,7 +455,7 @@ fn make_reuseport_listener(addr: SocketAddr) -> std::io::Result<StdListener> {
 
 ---
 
-## 8.11 零拷贝与缓冲策略
+## 9.11 零拷贝与缓冲策略
 
 - bytes crate：高效字节缓冲，clone 为浅拷贝（引用计数）。
 - BytesMut + freeze：可写缓冲到只读 Bytes 转换，避免复制。
@@ -476,7 +476,7 @@ fn build_packet() -> bytes::Bytes {
 
 ---
 
-## 8.12 背压、限流与队列
+## 9.12 背压、限流与队列
 
 - tower::limit、Semaphore 控并发；
 - mpsc/bounded 队列形成自然背压；
@@ -510,7 +510,7 @@ async fn main() {
 
 ---
 
-## 8.13 可观测性与排障
+## 9.13 可观测性与排障
 
 - tracing：结构化日志 + Span/事件
 - metrics：Prometheus 导出（metrics-exporter-prometheus）
@@ -535,7 +535,7 @@ async fn main() {
 
 ---
 
-## 8.14 安全最佳实践
+## 9.14 安全最佳实践
 
 - TLS 默认启用 rustls，禁用过时算法；验证证书。
 - 严格解析与限制：请求体大小上限、头数量限制、路径正则校验。
@@ -546,7 +546,7 @@ async fn main() {
 
 ---
 
-## 8.15 性能调优清单
+## 9.15 性能调优清单
 
 - 使用 release 构建：cargo build --release。
 - 连接池复用：reqwest Client 复用；数据库连接池（bb8、deadpool）。
@@ -557,7 +557,7 @@ async fn main() {
 
 ---
 
-## 8.16 练习
+## 9.16 练习
 
 1) 基于 axum 实现一个带超时、并发限流、请求体大小限制的 JSON API 服务，并记录 tracing 日志。
 2) 使用 reqwest 实现一个带连接池、超时、重试与指数退避的下载器，要求支持断点续传（Range 请求）。
@@ -566,7 +566,7 @@ async fn main() {
 
 ---
 
-## 8.17 小结
+## 9.17 小结
 
 - Rust 在网络编程中提供从底层 socket 到高层 HTTP/gRPC 的完整生态，结合 Tokio 实现高并发与低延迟。
 - 相比 Go，Rust 需要更显式的 runtime、trait 与类型约束，但换来零成本抽象与更强的编译期保障。

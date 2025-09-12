@@ -16,7 +16,7 @@
 
 ——
 
-## 1. 服务契约与接口管理
+## 15.1 服务契约与接口管理
 
 Rust 推荐以“显式契约 + 代码生成/共享类型”管理接口：
 
@@ -57,7 +57,7 @@ pub struct UserResp {
 
 ——
 
-## 2. 服务间通信
+## 15.2 服务间通信
 
 ### 2.1 HTTP/REST（axum）
 
@@ -186,7 +186,7 @@ Kafka（rdkafka）建议使用 tokio-stream 或专用执行器处理背压与提
 
 ——
 
-## 3. 服务发现、配置中心与环境管理
+## 15.3 服务发现、配置中心与环境管理
 
 - 服务发现：K8s ClusterIP/DNS、Consul、etcd；gRPC/HTTP 客户端可按 DNS 轮询 + 超时重试。
 - 配置中心：Vault/Consul/Etcd；或 GitOps（配置以文件形式随版本管理）。
@@ -208,7 +208,7 @@ fn mk_client() -> Client {
 
 ——
 
-## 4. 可靠消息、幂等与 Exactly-once 的工程化
+## 15.4 可靠消息、幂等与 Exactly-once 的工程化
 
 Exactly-once 往往是“业务层面”的幂等保证 + 至少一次投递的组合：
 
@@ -232,7 +232,7 @@ async fn handle_payment(req: PaymentReq) -> Result<()> {
 
 ——
 
-## 5. 事务与一致性：SAGA 与 Outbox
+## 15.5 事务与一致性：SAGA 与 Outbox
 
 - 跨服务强一致通常代价过高；SAGA 将一个大事务拆分为一系列本地事务与补偿动作。
 - 本地库 Outbox：服务内的变更与事件写入一个事务，保证“状态改变”与“事件发出”要么一起成功要么可恢复。
@@ -268,7 +268,7 @@ async fn dispatch_once(db: &Db, producer: &KafkaProducer) -> anyhow::Result<()> 
 
 ——
 
-## 6. 稳定性：限流、熔断、重试与退避
+## 15.6 稳定性：限流、熔断、重试与退避
 
 Rust 生态可使用 tower 进行客户端/服务端弹性策略：
 

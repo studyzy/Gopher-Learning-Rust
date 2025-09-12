@@ -19,7 +19,7 @@
 
 ——
 
-## 1. 概念与优势
+## 12.1 概念与优势
 
 Actor 特点：
 - 封装状态：状态仅在 Actor 任务内可变，外界只能发消息。
@@ -32,7 +32,7 @@ Actor 特点：
 
 ——
 
-## 2. 最小 Actor：从零实现
+## 12.2 最小 Actor：从零实现
 
 我们先给出最小可运行的 Tokio 异步 Actor（生产环境常用异步）。然后再给出 std 线程版。
 
@@ -156,7 +156,7 @@ fn main() {
 
 ——
 
-## 3. 消息协议设计
+## 12.3 消息协议设计
 
 为避免“字符串指令 + 任意 payload”的脆弱设计，Rust 推荐：
 - 用枚举表示命令类型。
@@ -182,7 +182,7 @@ enum Cmd {
 
 ——
 
-## 4. 监督与重启（Supervisor）
+## 12.4 监督与重启（Supervisor）
 
 Actor 的生产级实践必须考虑失败隔离与恢复。Rust 没有内建 supervisor tree，但可用“Supervisor 任务 + 子任务 JoinHandle”模式实现：
 
@@ -231,7 +231,7 @@ async fn main() {
 
 ——
 
-## 5. 背压、限流、超时与取消
+## 12.5 背压、限流、超时与取消
 
 - 背压：为 mpsc 通道设置有界容量。send().await 在满负载时挂起，保护下游。
 - 限流：使用信号量/令牌桶控制并发在飞操作，例如 tokio::sync::Semaphore。
@@ -268,7 +268,7 @@ impl Actor {
 
 ——
 
-## 6. 端到端示例：Actor 化计数服务 + Web
+## 12.6 端到端示例：Actor 化计数服务 + Web
 
 实现一个 CounterService Actor，提供 HTTP API（GET /count, POST /inc），各组件间通过消息交互，演示请求-响应、背压与取消。
 

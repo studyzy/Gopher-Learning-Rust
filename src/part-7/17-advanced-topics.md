@@ -15,7 +15,7 @@
 
 ——
 
-## 1. 内存与所有权进阶
+## 17.1 内存与所有权进阶
 
 场景：高 QPS 服务与热路径中的分配/拷贝优化。
 
@@ -41,7 +41,7 @@ use std::future::Future;
 
 ——
 
-## 2. 零拷贝与异步 IO 深入
+## 17.2 零拷贝与异步 IO 深入
 
 - bytes 与零拷贝共享：
 ```rust
@@ -71,7 +71,7 @@ async fn stream_body() -> impl IntoResponse {
 
 ——
 
-## 3. 并发与结构化并发
+## 17.3 并发与结构化并发
 
 - JoinSet：管理动态数量任务，控制在飞并发。
 ```rust
@@ -115,7 +115,7 @@ for job in jobs {
 
 ——
 
-## 4. 错误边界与恢复
+## 17.4 错误边界与恢复
 
 - 库层：thiserror 定义可匹配错误；应用层：anyhow 聚合上下文。
 ```rust
@@ -155,7 +155,7 @@ let guard = mu.lock().unwrap_or_else(|e| e.into_inner());
 
 ——
 
-## 5. 安全工程：unsafe 限界、FFI、WASM/Sandbox
+## 17.5 安全工程：unsafe 限界、FFI、WASM/Sandbox
 
 - unsafe 准入：仅在经验证的局部使用，编写“安全外壳”暴露安全 API；添加 miri 与 sanitizer 到 CI。
 - FFI：与 C/C++/Go 交互时，稳定 ABI（#[repr(C)]）与所有权边界必须清晰；避免跨边界释放内存。
@@ -168,7 +168,7 @@ pub struct CBuf { data: *mut u8, len: usize }
 
 ——
 
-## 6. 性能分析与可观测性进阶
+## 17.6 性能分析与可观测性进阶
 
 - pprof-rs：火焰图分析 CPU/内存（对标 Go pprof）
 ```toml
@@ -200,7 +200,7 @@ console_subscriber::init(); // 在 dev 环境启动
 
 ——
 
-## 7. 稳定性工程：限流/熔断/隔离/超时矩阵
+## 17.7 稳定性工程：限流/熔断/隔离/超时矩阵
 
 - 限流：令牌桶（tower::limit）、漏桶；对下游每个域名独立限流。
 - 熔断：失败率超过阈值打开，过渡到半开再试探；可使用外部库或自实现状态机。
@@ -223,7 +223,7 @@ let client = Client::builder()
 
 ——
 
-## 8. 类型驱动设计与 API 演进
+## 17.8 类型驱动设计与 API 演进
 
 - 新类型避坑（避免原始类型误用）：
 ```rust
@@ -242,7 +242,7 @@ pub struct Email(String);
 
 ——
 
-## 9. 常见棘手问题与排障流程
+## 17.9 常见棘手问题与排障流程
 
 - Runtime 阻塞：在 async 中使用阻塞 IO/CPU 导致卡顿。症状：高延迟、tokio-console 显示 reactor 饱和。解法：spawn_blocking/独立线程池。
 - 死锁/持锁跨 await：使用 std::Mutex 跨 await；改用 tokio::Mutex 或缩小临界区。

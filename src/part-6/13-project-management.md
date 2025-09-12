@@ -16,7 +16,7 @@
 
 ——
 
-## 1. Cargo 基础与工作区
+## 13.1 Cargo 基础与工作区
 
 Cargo 是 Rust 的包与构建工具，类似 Go 的 go mod + go build 的集合，但更关注“多包工作区”和“可选特性”。
 
@@ -83,7 +83,7 @@ cargo check -p worker    # 快速类型检查
 
 ——
 
-## 2. 依赖与 Feature 管理
+## 13.2 依赖与 Feature 管理
 
 Feature 是可选的编译单元，类似 Go 中“构建标签 + 可选依赖”的组合。通过 Feature：
 - 精简生产二进制（例如只启用必要的组件）
@@ -125,7 +125,7 @@ cargo build -p api --no-default-features --features "mysql"
 
 ——
 
-## 3. 环境配置与多二进制/多环境
+## 13.3 环境配置与多二进制/多环境
 
 一个 crate 可以拥有多个二进制入口，适合“同仓库多服务/工具”。
 
@@ -186,7 +186,7 @@ pub fn load() -> anyhow::Result<AppCfg> {
 
 ——
 
-## 4. 构建、交叉编译与发布（含 Docker）
+## 13.4 构建、交叉编译与发布（含 Docker）
 
 常用命令：
 ```bash
@@ -231,7 +231,7 @@ ENTRYPOINT ["/app/api"]
 
 ——
 
-## 5. 质量保障：fmt、clippy、test、bench、doc
+## 13.5 质量保障：fmt、clippy、test、bench、doc
 
 格式化与静态检查：
 ```bash
@@ -275,7 +275,7 @@ cargo doc --workspace --no-deps --open
 
 ——
 
-## 6. 版本、变更日志与发布
+## 13.6 版本、变更日志与发布
 
 语义化版本（SemVer）：MAJOR.MINOR.PATCH，公共 API 的兼容性由 Cargo 生态严格遵循。
 

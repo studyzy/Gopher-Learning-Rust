@@ -11,11 +11,11 @@
 
 ---
 
-## 5.1 Struct 对比 Go struct
+## 6.1 Struct 对比 Go struct
 
 Rust 的 `struct` 和 Go 的 `struct` 在“表达数据结构”上相似，但在“所有权/借用/生命周期、可见性、方法绑定、默认值和构造方式”等方面有本质差异。
 
-### 5.1.1 定义与可见性
+### 6.1.1 定义与可见性
 
 - Go：字段默认包内可见（小写私有，大写导出）
 - Rust：默认私有（对模块），使用 `pub` 导出；可按字段粒度控制可见性
@@ -57,7 +57,7 @@ func (u *User) Username() string {
 - Rust 没有“构造函数”关键字，常用 `new` 关联函数。
 - Rust 不鼓励直接暴露可变字段，更偏向暴露只读引用和受控的 setter（考虑不变量与安全性）。
 
-### 5.1.2 所有权与方法接收者
+### 6.1.2 所有权与方法接收者
 
 Go 方法接收者可为值或指针；Rust 方法接收者三种常见形态：
 - `&self`：不可变借用
@@ -99,7 +99,7 @@ func (c *Counter) Bump() { // 指针接收者
 - Rust 的 `&mut self` 保证独占可变借用，编译期避免数据竞争。
 - 选择 `self` 作为接收者可以表达“构造—消费”链式 API。
 
-### 5.1.3 字面量、默认值与构建模式
+### 6.1.3 字面量、默认值与构建模式
 
 - Rust 支持结构体更新语法与 `Default` trait。
 - 推荐为配置型结构实现 `Default + builder`。
@@ -145,7 +145,7 @@ let fast = Opts { timeout_ms: 200, ..base.clone() };
 - 没有语法级 Default，常用工厂函数或零值语义。
 - Builder 模式需手写或使用函数式选项模式。
 
-### 5.1.4 拷贝、克隆与派生
+### 6.1.4 拷贝、克隆与派生
 
 - Rust：`Copy` 是位拷贝语义（小型标量），`Clone` 是显式深/浅复制 API。
 - Go：赋值为浅拷贝，引用类型共享底层。
@@ -163,11 +163,11 @@ struct Big { data: Vec<u8> } // Vec 不可 Copy，但可 Clone
 
 ---
 
-## 5.2 Enum + 模式匹配
+## 6.2 Enum + 模式匹配
 
 Go 只有“常量枚举（iota）”，没有代数数据类型（ADT）。Rust 的 `enum` 是代数数据类型，能表达“多形状”的数据及其载荷，是表达状态机、协议、错误的强力工具。
 
-### 5.2.1 基础定义与载荷
+### 6.2.1 基础定义与载荷
 
 ```rust
 enum Auth {
@@ -189,7 +189,7 @@ fn auth_header(a: &Auth) -> String {
 
 Go 中的近似写法通常是多结构体 + 接口或用 `Kind` 字段手写判别，但 Rust `enum` 自带类型安全与匹配穷尽检查。
 
-### 5.2.2 `Option` 与 `Result`
+### 6.2.2 `Option` 与 `Result`
 
 Rust 核心库的两个“枚举即哲学”：
 - `Option<T>`：Some / None，代替 Go 中 `nil`（减少空指针）
@@ -227,7 +227,7 @@ func ParsePort(s string) (uint16, error) { ... }
 
 Rust 的 `?` 操作符让错误传播更加自然且类型安全。
 
-### 5.2.3 模式匹配与穷尽性检查
+### 6.2.3 模式匹配与穷尽性检查
 
 `match` 要求覆盖所有分支，避免遗漏；`if let` 适合单分支解构：
 
@@ -254,7 +254,7 @@ fn handle(ev: Event) {
 - 模式可带守卫（`if`）
 - 支持按名字解构、忽略（`_`、`..`）、绑定片段
 
-### 5.2.4 状态机建模
+### 6.2.4 状态机建模
 
 Rust `enum` 适合表达“只能处于其一”的状态，编译器帮你保证转换完整。
 
@@ -285,7 +285,7 @@ impl Conn {
 
 ---
 
-## 5.3 Trait 与 Trait 对象（dyn Trait）对比 Go 接口
+## 6.3 Trait 与 Trait 对象（dyn Trait）对比 Go 接口
 
 Rust 的 `trait` 类似 Go 的接口，但差异很大：
 - Rust trait 支持“泛型静态派发”和“动态派发”
@@ -293,7 +293,7 @@ Rust 的 `trait` 类似 Go 的接口，但差异很大：
 - 实现是“外部实现孤儿规则”约束下进行的
 - 没有隐式实现（与 Go 一样是“结构性实现”，但需要 `impl` 明确定义）
 
-### 5.3.1 定义与实现
+### 6.3.1 定义与实现
 
 ```rust
 trait Repository {
@@ -329,7 +329,7 @@ type Repository interface {
 
 Rust trait 可有默认方法，减少重复。
 
-### 5.3.2 静态派发（泛型）与动态派发（trait object）
+### 6.3.2 静态派发（泛型）与动态派发（trait object）
 
 - 静态派发：`fn handle<T: Repository>(repo: &mut T) { ... }`
   - 编译期单态化，零成本抽象，二进制可能膨胀
@@ -362,7 +362,7 @@ fn start_service(repo: Arc<dyn Repository + Send + Sync>) {
 }
 ```
 
-### 5.3.3 关联类型 vs 泛型参数
+### 6.3.3 关联类型 vs 泛型参数
 
 Rust trait 可以用“关联类型”表达输出类型关系，减少泛型污染。
 
@@ -392,7 +392,7 @@ trait Stream2<T> {
 
 当输出类型依赖于实现者时，关联类型更自然；当调用点需要指定类型时，泛型参数更合适。
 
-### 5.3.4 对象安全与 `dyn Trait`
+### 6.3.4 对象安全与 `dyn Trait`
 
 不是所有 trait 都能做成 `dyn Trait`。对象安全要求（简化版）：
 - 方法不返回 `Self`（或需置于 `where Self: Sized` 限制中）
@@ -415,7 +415,7 @@ trait Service {
 }
 ```
 
-### 5.3.5 Blanket 实现与孤儿规则
+### 6.3.5 Blanket 实现与孤儿规则
 
 - Blanket impl：为所有满足约束的类型提供实现（标准库广泛使用）
 ```rust
@@ -439,7 +439,7 @@ impl std::fmt::Display for MyUuid {
 
 ---
 
-## 5.4 实战：用 Struct + Enum + Trait 设计一个后端请求处理框架
+## 6.4 实战：用 Struct + Enum + Trait 设计一个后端请求处理框架
 
 目标：以 Go 风格的 Handler/Router 心智，落地 Rust 版本，展示 enum 状态、trait 抽象、dyn 对象、安全可拓展的组合。
 
@@ -450,7 +450,7 @@ impl std::fmt::Display for MyUuid {
 - 错误处理：Result + 自定义错误枚举
 - 可用 `Box<dyn Handler>` 动态组合
 
-### 5.4.1 数据模型与错误
+### 6.4.1 数据模型与错误
 
 ```rust
 #[derive(Debug, Clone)]
@@ -482,7 +482,7 @@ pub enum AppError {
 pub type Result<T> = std::result::Result<T, AppError>;
 ```
 
-### 5.4.2 Trait 与 Handler 组合
+### 6.4.2 Trait 与 Handler 组合
 
 ```rust
 pub trait Handler: Send + Sync {
@@ -501,7 +501,7 @@ where
 - 提供闭包到 `Handler` 的 blanket 实现，使得快速注册处理逻辑。
 - `Send + Sync` 使其可跨线程共享（为将来的异步或多线程打基础）。
 
-### 5.4.3 Router 与匹配
+### 6.4.3 Router 与匹配
 
 ```rust
 use std::collections::HashMap;
@@ -622,7 +622,7 @@ fn main() {
 
 ---
 
-## 5.5 高级话题与坑位清单
+## 6.5 高级话题与坑位清单
 
 - 可变别名/借用检查
   - Go 多 goroutine 共享 map 需加锁；Rust 在编译期阻止数据竞争。需要共享可变状态时，使用 `Mutex/Arc/RwLock`。
@@ -640,7 +640,7 @@ fn main() {
 
 ---
 
-## 5.6 小结（Go 开发者迁移要点）
+## 6.6 小结（Go 开发者迁移要点）
 
 - Struct：更强调不可变性与受控可变；构造靠关联函数与 `Default`/builder；移动与克隆显式。
 - Enum：是 Rust 的“多形状数据”基石，配合模式匹配实现更可靠的状态机与错误处理。

@@ -21,7 +21,7 @@
 
 ——
 
-## 1. std::thread vs goroutine
+## 11.1 std::thread vs goroutine
 
 Go 的 goroutine 是用户态协程，由运行时调度（GMP）；Rust 的 std::thread 是 OS 线程。开销差异显著：goroutine 可百万级；OS 线程通常几千以内。因此：
 - CPU 密集短任务：用线程池（rayon）或少量 std::thread。
@@ -107,7 +107,7 @@ fn main() {
 
 ——
 
-## 2. tokio::spawn vs goroutine
+## 11.2 tokio::spawn vs goroutine
 
 goroutine 更像 Tokio 的 task：轻量、调度友好、适合大并发 IO。区别：
 - goroutine 即使阻塞 IO 也不一定卡住 M；Tokio task 必须使用异步 IO（.await），阻塞操作需 spawn_blocking。
@@ -178,7 +178,7 @@ let result = handle.await?; // 不阻塞 Tokio reactor
 
 ——
 
-## 3. Mutex/RwLock vs sync.Mutex/RWMutex
+## 11.3 Mutex/RwLock vs sync.Mutex/RWMutex
 
 - Go sync.Mutex 轻量无“中毒”；Rust Mutex 可能因 panic 中毒，需要处理 Err。
 - 读多写少：Go sync.RWMutex；Rust std::sync::RwLock 或 tokio::sync::RwLock（异步）。
@@ -247,7 +247,7 @@ async fn main() {
 
 ——
 
-## 4. Channel 对照（std/tokio vs Go channel）
+## 11.4 Channel 对照（std/tokio vs Go channel）
 
 Go channel：语言级原语，支持无缓冲/带缓冲、关闭、select。Rust 有多实现：
 - std::sync::mpsc：标准库，单接收端。学习/简单用途。
@@ -364,7 +364,7 @@ fn main() {
 
 ——
 
-## 5. 背压、取消、超时与 select
+## 11.5 背压、取消、超时与 select
 
 - 背压：Tokio mpsc 的有界队列在满载时 send().await 会挂起，形成自然背压；Go 的带缓冲 channel 类似，无缓冲是同步点。
 - 取消：Go 用 context.Context；Rust 常见：
@@ -418,7 +418,7 @@ async fn main() {
 
 ——
 
-## 6. 端到端示例：异步服务中的并发拓扑
+## 11.6 端到端示例：异步服务中的并发拓扑
 
 目标：构建“URL 生产 → 并发下载 → 消费存储”的流水线，体现背压、并发控制与取消。示例采用“单接收端 + JoinSet 控制在飞任务”，避免误用 clone Receiver。
 
@@ -502,7 +502,7 @@ async fn main() -> Result<()> {
 
 ——
 
-## 7. 常见坑与实践建议
+## 11.7 常见坑与实践建议
 
 - 不要在 async 任务中持有 std::Mutex/RwLock 的 guard 跨 await；用 tokio::sync 锁或缩短临界区。
 - 运行时内做阻塞 IO/CPU 请用 spawn_blocking 或独立线程池；CPU 密集考虑 rayon。
@@ -517,7 +517,7 @@ async fn main() -> Result<()> {
 
 ——
 
-## 8. 速查表（给 Go 工程师）
+## 11.8 速查表（给 Go 工程师）
 
 - goroutine → tokio::spawn(task) 或 std::thread::spawn
 - sync.Mutex/RWMutex → std::sync::Mutex/RwLock（同步）/ tokio::sync::Mutex/RwLock（异步）
@@ -528,7 +528,7 @@ async fn main() -> Result<()> {
 
 ——
 
-## 9. 小结
+## 11.9 小结
 
 - Rust 将“并发安全”前置到编译期：所有权、Send/Sync 与类型系统帮助你避免数据竞争。
 - 后台服务：IO 密集优先 Tokio + async/await；CPU 密集用 rayon 或 spawn_blocking。
