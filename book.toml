@@ -1,0 +1,5 @@
+[book]
+authors = ["深蓝居"]
+language = "cn"
+src = "src"
+title = "Go程序员Rust从入门到精通"
