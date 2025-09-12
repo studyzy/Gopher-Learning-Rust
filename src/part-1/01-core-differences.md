@@ -1,53 +1,24 @@
-# 1. Go 与 Rust 的核心差异
+# 第1章：Go 与 Rust 的核心差异
+
+> “理解差异是掌握精髓的第一步”
+
+作为一名经验丰富的 Go 开发者，在踏入 Rust 世界的第一刻，你需要建立一张“认知地图”。这张地图将帮助你理解两种语言在**内存管理、并发模型、错误处理、包管理、类型系统**等核心领域的设计哲学与实现差异。
 
 本章目标：  
-- 建立 Go 程序员学习 Rust 的认知地图  
-- 理解两者在 **内存管理、并发模型、错误处理、包管理、类型系统** 等方面的差异  
-- 通过代码示例对照，帮助你快速抓住 Rust 的独特思维
-
-常见坑：
-- 共享可变数据：Rust 不允许同时存在多个可变引用；需用 &T（只读）、&mut T（独占可变）或 Arc/Mutex/RwLock 等并发原语
-- 字符串/切片：&str 与 &[T] 是借用视图，修改需拥有权或可变借用
-- 函数签名设计：尽量让所有权上移到构造/边界层，内部用借用降低拷贝与 move
-
-实践指引：
-- 跨线程共享：Arc<T> + Mutex<T>/RwLock<T>
-- API 设计：默认以 &str、&[T] 接口；需要返回数据时返回拥有权（String/Vec<T>）
-- 宏观策略：先写同步版通过借用/生命周期，再抽换成异步版
-
-常见坑：
-- 在 async 上下文中直接执行阻塞 IO（如 std::fs）：应使用 tokio::task::spawn_blocking 或专用阻塞线程池
-- Send/Sync：跨线程共享的类型需满足 Send/Sync 约束，编译期会强制校验
-- 背压与容量：mpsc 通道需合理设置缓冲区，避免生产者/消费者失衡
-
-实践指引：
-- IO 密集：优先 Tokio；CPU 密集：rayon 或多线程 + channel
-- 控制流：select! 宏与 tokio::time::timeout 处理超时/取消
-- 通道选择：tokio::sync::mpsc（异步）、broadcast（多播）、oneshot（单次）
-
-常见坑：
-- unwrap/expect 滥用导致崩溃：生产代码优先 ? 传播 + 自定义错误
-- 错误类型繁杂：建议库用 thiserror 精确定义，应用边界用 anyhow 聚合
-
-实践指引：
-- 分层策略：领域错误用 thiserror；入口层 with_context 增强排障
-- 日志：配合 tracing 记录 error 上下文（span/field）
-
-实践指引：
-- workspace 管理多 crate 单仓库；复用公共库、共享锁文件
-- features 定义可选依赖（如 serde、runtime 选择），按需裁剪体积与功能
-- 质量工具：cargo fmt、clippy、audit、udeps；发布用 cargo publish（库）或 cargo dist（应用分发）
+✅ 建立 Go 程序员学习 Rust 的认知地图  
+✅ 理解两者在核心领域的设计哲学差异  
+✅ 通过代码对比快速掌握 Rust 的独特思维
 
 ---
 
-## 1.1 内存管理
+## 1.1 内存管理：从 GC 到所有权
 
-概念对照：
-- Go：自动 GC，无需手动释放；通过逃逸分析决定堆/栈分配
-- Rust：编译期所有权 + 借用检查，作用域结束自动释放；无 GC 暂停
+**概念对照：**
+- **Go**：自动 GC，无需手动释放；通过逃逸分析决定堆/栈分配
+- **Rust**：编译期所有权 + 借用检查，作用域结束自动释放；无 GC 暂停
 
-迁移心法：
-- 把“何时释放”从运行时交给“谁拥有”在编译期确定；优先用不可变借用传参，减少所有权移动
+**迁移心法：**  
+把“何时释放”从运行时交给“谁拥有”在编译期确定；优先用不可变借用传参，减少所有权移动。
 
 ### Go
 Go 使用垃圾回收（GC），开发者不用关心内存释放：
@@ -320,22 +291,36 @@ fn main() {
 - Rust：tracing_subscriber 做结构化日志；criterion 做基准测试
 - 迁移：先对齐指标（P99 延迟、吞吐、内存峰值），再逐步替换模块
 
-## 1.7 迁移清单（Checklist）
-- 边界/所有权：明确跨线程共享是否需要 Arc/Mutex/RwLock
-- 错误策略：库层 thiserror，应用层 anyhow + with_context
-- 并发：Tokio 作为执行器；分离阻塞与异步；合理设置通道容量与限流
-- 构建：workspace + features 控制可选能力
-- 质量：fmt + clippy + test + bench + audit（CI 接入）
+---
 
-# 小结
+## 核心差异对比表
 
-| 特性         | Go                     | Rust                         |
-|--------------|------------------------|------------------------------|
-| 内存管理     | GC                     | 所有权 / 借用检查            |
-| 并发模型     | goroutine + channel    | async/await + Future + Tokio |
-| 错误处理     | error                  | Result<T, E> + `?`           |
-| 包管理       | Go Modules             | Cargo + Crates.io            |
-| 类型系统     | interface（duck typing） | trait + 泛型约束             |
+| **特性** | **Go** | **Rust** |
+|------------|--------|----------|
+| **内存管理** | 自动 GC | 所有权/借用检查 |
+| **并发模型** | goroutine + channel | async/await + Future + Tokio |
+| **错误处理** | error 接口 | Result<T, E> + `?` 运算符 |
+| **包管理** | Go Modules | Cargo + Crates.io |
+| **类型系统** | interface（duck typing） | trait + 泛型约束 |
+| **性能特性** | GC 暂停，快速开发 | 零成本抽象，极致性能 |
 
-> **学习建议**：第一章重点是认知差异。Go 开发者转 Rust，不要先急着上手框架，而是要彻底理解 Rust 的内存模型与类型系统。
+---
+
+## 迁移实践检查清单
+
+✅ **内存管理边界**：明确跨线程共享是否需要 Arc/Mutex/RwLock  
+✅ **错误处理策略**：库层使用 thiserror，应用层使用 anyhow + with_context  
+✅ **并发模型选择**：Tokio 作为主执行器；分离阻塞与异步；合理设置通道容量  
+✅ **构建系统**：使用 workspace + features 控制可选能力  
+✅ **代码质量**：集成 fmt + clippy + test + bench + audit 到 CI 流程
+
+---
+
+## 学习建议
+
+🎯 **理解核心理念**：第一章重点是认知差异。Go 开发者转 Rust，不要先急着上手框架，而是要彻底理解 Rust 的内存模型与类型系统。
+
+🚀 **渐进式学习**：先掌握所有权和借用，再学习异步编程，最后在实际项目中练习。
+
+📝 **动手实践**：每一个概念都要动手写代码验证，理解编译器的错误信息是学习 Rust 的重要环节。
 

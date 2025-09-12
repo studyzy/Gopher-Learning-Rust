@@ -25,3 +25,4 @@
   - [15. 从零构建 Rust 后端服务](part-7/15-build-backend-from-scratch.md)
   - [16. 高级话题](part-7/16-advanced-topics.md)
 - [第八部分：从 Go 到 Rust 的思维升级](part-8/README.md)
+  - [17. Rust 生产实践总览与路线图](part-8/17-rust-in-production.md)
