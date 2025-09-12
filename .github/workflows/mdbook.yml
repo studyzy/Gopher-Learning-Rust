@@ -32,7 +32,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./book   # mdBook 默认输出目录
+          path: ./book/html   # mdBook 默认输出目录
           
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
