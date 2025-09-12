@@ -29,6 +29,11 @@ jobs:
       - name: Build the book
         run: mdbook build
 
+      - name: Copy PDF to HTML output directory
+        run: |
+          mkdir -p ./book/html/assets
+          cp ./book/pdf/output.pdf ./book/html/assets/gopher-learning-rust.pdf
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

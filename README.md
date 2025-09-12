@@ -1,5 +1,7 @@
 # 《Go程序员的Rust从入门到精通》
 
+> 📖 **[在线阅读](https://studyzy.github.io/Gopher-Learning-Rust/)** | **[下载PDF版本](https://studyzy.github.io/Gopher-Learning-Rust/assets/gopher-learning-rust.pdf)**
+
 ## 第一部分：语言思维转换
 ### 1. Go 与 Rust 的核心差异
 - **内存管理**：Go 的 GC vs Rust 的所有权 / 借用检查器

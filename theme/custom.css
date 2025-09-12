@@ -305,6 +305,35 @@ html {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* PDF下载链接样式 */
+.content blockquote a[href$=".pdf"] {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--rust-orange), #e74c3c);
+    color: white !important;
+    padding: 0.8em 1.5em;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    border: none !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    margin: 0.5em 0;
+}
+
+.content blockquote a[href$=".pdf"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+    background: linear-gradient(135deg, #e74c3c, var(--rust-orange));
+}
+
+.content blockquote a[href$=".pdf"]::before {
+    content: "📄";
+    margin-right: 0.5em;
+    font-size: 1.2em;
+}
+
 /* 滚动条样式 */
 ::-webkit-scrollbar {
     width: 8px;

@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 添加特殊标注框
     addSpecialBoxes();
+    
+    // 增强PDF链接
+    enhancePDFLinks();
 });
 
 // 为代码块添加复制按钮
@@ -249,6 +252,66 @@ function typewriterEffect(element, text, speed = 100) {
     type();
 }
 
+// PDF下载链接增强功能
+function enhancePDFLinks() {
+    const pdfLinks = document.querySelectorAll('a[href$=".pdf"]');
+    
+    pdfLinks.forEach(function(link) {
+        // 添加下载统计（可选）
+        link.addEventListener('click', function(e) {
+            // 显示下载提示
+            const toast = document.createElement('div');
+            toast.textContent = '正在准备PDF下载...';
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #27ae60;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                z-index: 10000;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                animation: slideInRight 0.3s ease;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(function() {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(function() {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        });
+        
+        // 添加悬停效果
+        link.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.02)';
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
+// 添加CSS动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
 // 页面加载完成后的初始化
 window.addEventListener('load', function() {
     // 添加加载完成的淡入效果
@@ -258,4 +321,7 @@ window.addEventListener('load', function() {
     setTimeout(function() {
         document.body.style.opacity = '1';
     }, 100);
+    
+    // 增强PDF链接
+    enhancePDFLinks();
 });
