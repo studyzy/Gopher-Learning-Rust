@@ -22,7 +22,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install mdBook
-        run: cargo install mdbook --locked
+        run: |
+          cargo install mdbook --locked
+          cargo install mdbook-pdf --locked
 
       - name: Build the book
         run: mdbook build
@@ -31,6 +33,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./book   # mdBook 默认输出目录
+          
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mdbook-pdf
+          path: ./book/pdf/book.pdf
 
   deploy:
     needs: build
