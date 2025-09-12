@@ -1,5 +1,6 @@
 # Summary
 
+- [封面](./cover.md)
 - [前言](./preface.md)
 
 # 第一部分：语言思维转换

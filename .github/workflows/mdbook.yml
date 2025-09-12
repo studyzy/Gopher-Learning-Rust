@@ -21,13 +21,39 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Install Chinese fonts and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk fonts-noto-cjk-extra fonts-wqy-zenhei fonts-wqy-microhei
+          sudo fc-cache -fv
+          # 验证字体安装
+          fc-list | grep -i "noto\|wqy" || echo "Warning: Chinese fonts may not be properly installed"
+          
       - name: Install mdBook
         run: |
           cargo install mdbook --locked
           cargo install mdbook-pdf --locked
 
+      - name: Setup font configuration
+        run: |
+          # 复制字体配置文件
+          sudo cp .fontconfig /etc/fonts/local.conf
+          sudo fc-cache -fv
+          
+      - name: Verify font installation
+        run: |
+          echo "=== Available Chinese fonts ==="
+          fc-list | grep -i "noto\|wqy\|cjk" | head -10
+          echo "=== Font configuration ==="
+          cat /etc/fonts/local.conf
+          
       - name: Build the book
-        run: mdbook build
+        run: |
+          # 设置字体环境变量
+          export FONTCONFIG_PATH=/etc/fonts
+          export FONTCONFIG_FILE=/etc/fonts/local.conf
+          echo "Building mdBook with Chinese font support..."
+          mdbook build
 
       - name: Copy PDF to HTML output directory
         run: |

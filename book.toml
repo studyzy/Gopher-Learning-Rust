@@ -59,3 +59,11 @@ preprocess = ["links"]
 use-default-preprocessors = true
 
 [output.pdf]
+# PDF输出配置
+paper-size = "a4"
+margin-top = 2.0
+margin-bottom = 2.0
+margin-left = 2.0
+margin-right = 2.0
+# 启用中文支持
+enable-cjk = true
