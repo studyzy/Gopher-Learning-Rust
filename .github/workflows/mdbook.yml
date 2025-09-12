@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mdbook-pdf
-          path: ./book/pdf/book.pdf
+          path: ./book/pdf/output.pdf
 
   deploy:
     needs: build

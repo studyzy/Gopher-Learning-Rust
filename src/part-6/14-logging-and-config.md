@@ -1,4 +1,4 @@
-# 13. 日志与配置（面向 Go 程序员）
+# 13. 日志与配置
 
 本章聚焦服务端最常用的两个工程基础：结构化日志与配置管理。对照 Go 的 zap/logrus + env/config 的实践，给出 Rust 生态的 tracing（结构化日志/链路）与多源配置（TOML/env/CLI）的一体化方案，包含动态级别、字段上下文、OpenTelemetry、SIGHUP 热重载与生产落地建议。
 

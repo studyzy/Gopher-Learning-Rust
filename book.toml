@@ -57,3 +57,5 @@ build-dir = "book"
 create-missing = true
 preprocess = ["links"]
 use-default-preprocessors = true
+
+[output.pdf]
