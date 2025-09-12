@@ -36,4 +36,4 @@
 
 # 第八部分：从 Go 到 Rust 的思维升级
   - [第18章：生产环境中的Rust](./part-8/18-rust-in-production.md)
-- [Go程序员学习Rust常见问题](faq.md)
+# [Go程序员学习Rust常见问题](faq.md)
