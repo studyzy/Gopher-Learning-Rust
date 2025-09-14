@@ -369,6 +369,83 @@ fn main() {
 
 ---
 
+## 2.5 代码规范与风格对照（Go ↔ Rust）
+
+本节帮助 Go 开发者用“熟悉的感觉”写出规范的 Rust 代码：命名、布局、格式化、Lint、错误与日志、模块与 API 设计。
+
+- 命名与基本风格
+  - Go：导出标识符首字母大写（CamelCase）；私有小写开头。
+  - Rust：模块/文件 snake_case；函数/变量 snake_case；结构体/枚举/trait 使用 PascalCase；常量与静态使用 UPPER_SNAKE_CASE。可见性用 `pub` 控制（默认私有）。
+  - 建议：面向库的对外 API 命名稳定、简洁；内部细节保持私有，必要时使用 `pub(crate)` 细化可见范围。
+
+- 文件与模块布局
+  - Go：按包（目录）组织，`package foo`。
+  - Rust：按模块组织：foo.rs 或 foo/mod.rs；同名目录代表子模块；对外通过 `pub mod foo;` 暴露。库入口为 src/lib.rs，二进制入口为 src/main.rs。
+  - 建议：公共 API 放在 lib.rs 暴露；实现细节拆分到子模块；integration tests 放在 `tests/` 目录。
+
+- 自动格式化（等价 gofmt）
+  - 工具：`rustfmt`
+  - 用法：
+    - 一次性：`cargo fmt`
+    - 检查（CI 友好）：`cargo fmt -- --check`
+  - 配置：根目录可放 `rustfmt.toml`，但尽量遵循社区默认，减少团队分歧。
+
+- Lint 静态检查（等价 golangci-lint 的一部分）
+  - 工具：`clippy`
+  - 用法：
+    - 本地：`cargo clippy --all-targets --all-features`
+    - 收敛为错误（CI 严格模式）：`cargo clippy -- -D warnings`
+  - 典型建议：避免无意义的 clone、使用 `if let/while let` 简化匹配、优先 `Iterator` 风格、注意错误链传递。
+
+- 错误处理规范（对照 Go 的 error）
+  - Go：error 接口 + 包装。
+  - Rust：`Result<T, E>` + `?` 传播；推荐库：
+    - 应用层：`anyhow`（快速、动态错误，便于顶层兜底与上下文）
+    - 库/SDK：`thiserror`（为公共错误类型派生 `Error` 实现，稳定 API）
+  - 建议：
+    - 业务函数返回 `Result<T, E>`，在边界添加上下文：`context("...")`（anyhow/eyre）。
+    - 公共 crate 用 `thiserror` 定义稳态错误类型；避免将 `anyhow::Error` 暴露在公共 API。
+
+- 日志与可观测性（对照 Go 的 log/slog/zerolog）
+  - Rust 现代实践：`tracing`（结构化日志 + span）
+  - 用法建议：
+    - 应用：`tracing-subscriber` 初始化全局订阅者；使用 `info!`, `warn!`, `error!`，在关键路径打 `#[instrument]`。
+    - 与异步结合良好，建议统一 JSON 输出，便于采集。
+
+- 公共 API 设计（对照 Go 的接口导出）
+  - 尽量暴露“最小必要”API；将内部模块保持私有。
+  - 使用 trait 表达抽象，面向测试注入 mock（`mockall`）；对外可返回具体类型或 `impl Trait` 以隐藏实现细节。
+  - 错误类型稳定、文档完整；避免导出需要频繁变更的内部结构体字段。
+
+- Iterator 与集合风格（对照 Go 的 for/range）
+  - Rust 鼓励链式迭代器：`iter().map(...).filter(...).collect::<Vec<_>>()`
+  - 可读性优先：当链过长可拆变量；避免不必要的 `clone()`，优先借用。
+
+- 注释与文档（对照 Go doc）
+  - 文档注释：`///`（项目前），模块级 `//!`
+  - 自动生成文档：`cargo doc --open`
+  - 示例可写进文档注释中的代码块，测试时会作为 doctest 运行，有助保证示例可用。
+
+- 配置与特性（features）
+  - 使用 Cargo features 控制可选依赖与编译开关，避免在代码中大量 `cfg!` 分支。
+  - 提供合理的默认特性组合（`default`），减少使用门槛。
+
+- 常见风格陷阱（从 Go 转 Rust 易踩）
+  - 过度使用可变：在 Rust 中不可变优先，缩小可变借用作用域。
+  - 滥用 `clone()`：先考虑借用（`&T`/`&mut T`）；必要时再复制。
+  - `unwrap()` 滥用：库代码禁用；应用入口处可兜底，但优先 `?` 与带上下文的错误。
+  - 过深的模块可见性：不要到处 `pub`，用 `pub(crate)` 或保持私有。
+  - 不一致的所有权语义：明确函数是否“借用还是接管”，命名与签名一起表达清楚（`&self`/`&mut self`/`self`）。
+
+- 最小可执行规范清单（可加入 CI）
+  - 格式化：`cargo fmt -- --check`
+  - Lint：`cargo clippy --all-targets --all-features -- -D warnings`
+  - 测试：`cargo test --all-features --all-targets`
+  - 文档：`cargo doc -Zunstable-options --document-private-items`（可选）
+  - 覆盖率：`cargo llvm-cov --workspace --all-features --html`（建议在 Linux CI）
+
+---
+
 ## 章节总结
 
 通过本章的学习，你应该已经掌握了 Rust 基础语法的核心理念：
